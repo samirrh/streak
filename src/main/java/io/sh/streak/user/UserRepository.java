@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository // interface responsible for data layer
 public interface UserRepository extends JpaRepository<User, Long> {
-
     Optional<User> findUserByEmail(String email);
 }

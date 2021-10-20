@@ -44,4 +44,9 @@ public class UserController {
             @RequestParam(required = false) String email) {
         userService.updateUser(userId, name, email);
     }
+
+    @PutMapping(path = "streak/{userId}")
+    public int updateStreak(@PathVariable("userId") Long userId, @RequestParam Boolean increaseStreak) {
+        return userService.updateStreak(userId, increaseStreak);
+    }
 }

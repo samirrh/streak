@@ -45,10 +45,26 @@ public class UserService {
             user.setName(name);
         }
         if (email != null && email.length() > 0 && email != user.getEmail()) {
+            Optional<User> userByEmail = userRepository.findUserByEmail(email);
+            if (userByEmail.isPresent()) {
+                throw new IllegalStateException("User with email: " + email + " already taken");
+            }
             user.setEmail(email);
-            // check if email is present here we dont want same email
         }
+    }
 
+    @Transactional
+    public int updateStreak(Long userId, Boolean increaseStreak) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User with id: " + userId + " not found"));
+        if (increaseStreak) {
+            user.setStreak(user.getStreak() + 1);
+        } else {
+            user.setStreak(user.getStreak() - 1);
+        }
+        return user.getStreak();
+        // add handling to stop negative streak and a reset streak
+        // as well as date checking for update
     }
 
 }
